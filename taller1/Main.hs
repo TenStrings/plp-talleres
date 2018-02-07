@@ -16,7 +16,6 @@ avanzar :: Anillo t -> Anillo t
 avanzar (A actual f) = A ((fromJust.f) actual) f
 
 -- Ejercicio 2
-
 enAnillo:: Eq t => t -> Anillo t -> Bool
 enAnillo e a = 
     elem e (anilloALista a) 
@@ -26,9 +25,12 @@ filterAnillo :: Eq t => (t -> Bool) -> Anillo t -> Maybe (Anillo t)
 filterAnillo p a = listaAAnillo (filter p (anilloALista a))
 
 -- Ejercicio 4
-
 mapAnillo:: Eq a => Eq b => (a -> b) -> Anillo a -> Anillo b
-mapAnillo f a = fromJust(listaAAnillo (map f (anilloALista(a))))
+mapAnillo f a = A (f (actual a)) 
+                  (\x -> if null (preImagen x) then Nothing
+                         else   Just (f (fromJust (siguiente a (head (preImagen x)))))
+                    )
+        where preImagen y = filter ((== y).f) (anilloALista a)
 
 --Ejercicio 5
 palabraFormable :: String -> [Anillo Char] -> Bool
@@ -68,3 +70,21 @@ partir xs = [ ( take i xs, drop i xs ) | i <- [ 0.. ( length xs ) ] ]
 permutaciones :: [a] -> [[a]]
 permutaciones = foldr (\x rec-> concatMap (agregarEnTodasLasPosiciones x) rec) [[]] 
     where agregarEnTodasLasPosiciones j js = [ (fst h)++[j]++(snd h)| h <- (partir js)]
+
+
+
+ejemploUnElemento :: Anillo Integer
+ejemploUnElemento = singleton 1
+
+ejemplo5Elementos :: Anillo Integer
+ejemplo5Elementos = insertar 10 anilloEjemplo
+
+
+listaAnillo :: [Anillo Char]
+listaAnillo = [singleton 'a']
+
+listaAnillos :: [Anillo Char]
+listaAnillos =  map fromJust [listaAAnillo ['h','a','g'], 
+                     listaAAnillo ['e','o'], 
+                     listaAAnillo ['k','o'] ]
+
