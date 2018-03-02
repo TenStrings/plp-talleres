@@ -1,4 +1,4 @@
-//
+﻿//
 // Ejercicio 1
 //
 let Bool = {};
@@ -77,9 +77,8 @@ Constante.prototype.deepCopy = function(){
 }
 
 
-function DeepCopyTrait(){};
-
-DeepCopyTrait.prototype.deepCopy = function(){
+let DeepCopyTrait = {};
+DeepCopyTrait.deepCopy = function(){
 	let newCopy = {};
 	for(let property in this){
 		if(DeepCopyTrait.prototype.isPrototypeOf(this[property])){
@@ -94,7 +93,7 @@ DeepCopyTrait.prototype.deepCopy = function(){
 
 
 function Expresion(){};
-Expresion.prototype.deepCopy = DeepCopyTrait.prototype.deepCopy;
+Expresion.prototype = Object.assign(Expresion.prototype, DeepCopyTrait);
 
 Bool.__proto__ = Expresion.prototype;
 Constante.prototype.__proto__ = Expresion.prototype;
