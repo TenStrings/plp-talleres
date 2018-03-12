@@ -308,11 +308,26 @@ pesoCamino(M, [ O, D | C ], N) :-
 	distanciaVecinas(M, O, D, P),
 	N is P + N1.
 
+%Consultas de test:
+%
+%		mapaNoHamiltoniano(M),caminoSimple(M,retiro,cabildo, C),pesoCamino(M, C, N).
+%
+%		N = 20 ;
+%		N = 60 ;
+
+%
 %caminoMinimo(+M, +O, +D, ?C, ?N)
 caminoMinimo(M, O, D, C, N) :-
 	caminoSimple(M, O, D, C),
 	pesoCamino(M, C, N),
 	forall(caminoSimple(M,O,D,C1), (pesoCamino(M, C1, N1), N =< N1)).
 	
+%Consultas de test:
+%
+%		mapaNoHamiltoniano(M),caminoMinimo(M,retiro,cabildo, C,N).
+%
+%		C = [retiro, libertad, cabildo],
+%		N = 20 ;
+
 
 
